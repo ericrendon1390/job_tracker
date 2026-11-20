@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ table | capitalize }} Details</h1>
+
+<div class="card" style="text-align: left; max-width: 800px;">
+
+    <h2>Record #{{ record[primary_key] }}</h2>
+
+    <table>
+        {% for field in fields %}
+        <tr>
+            <th>{{ field.replace("_", " ") | title }}</th>
+            <td>
+                {{ record[field] if record[field] is not none else "N/A" }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>
+        <a class="button"
+           href="{{ url_for('edit_record',
+                  table=table,
+                  record_id=record[primary_key]) }}">
+            Edit Record
+        </a>
+
+        <a class="button"
+           href="{{ url_for('list_records', table=table) }}">
+            Back to List
+        </a>
+    </p>
+
+</div>
+
+{% endblock %}
+
