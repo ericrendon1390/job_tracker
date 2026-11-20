@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ "Edit" if record else "Add" }} {{ table | capitalize }}</h1>
+
+<form method="POST">
+
+    {% for field in fields %}
+
+        <label for="{{ field }}">
+            {{ field.replace("_", " ") | title }}
+        </label>
+
+        {% if field == "cover_letter_sent" %}
+
+            <input type="checkbox"
+                   id="{{ field }}"
+                   name="{{ field }}"
+                   value="1"
+                   {% if record.get(field) %}checked{% endif %}>
+
+        {% elif field in choices %}
+
+            <select name="{{ field }}" id="{{ field }}">
+                <option value="">Select an option</option>
+
+                {% for choice in choices[field] %}
+                    <option value="{{ choice }}"
+                        {% if record.get(field) == choice %}
+                            selected
+                        {% endif %}>
+                        {{ choice }}
+                    </option>
+                {% endfor %}
+            </select>
+
+        {% elif field in options %}
+
+            <select name="{{ field }}" id="{{ field }}">
+                <option value="">Select an option</option>
+
+                {% for item in options[field] %}
+                    <option value="{{ item.id }}"
+                        {% if record.get(field) == item.id %}
+                            selected
+                        {% endif %}>
+                        {{ item.label }}
+                    </option>
+                {% endfor %}
+            </select>
+
+        {% elif field_types.get(field) == "textarea" %}
+
+            <textarea name="{{ field }}" id="{{ field }}"
+                      rows="4">{{ record.get(field) or "" }}</textarea>
+
+            {% if field == "requirements" %}
+                <small>Enter skills separated by commas, e.g. Python, SQL, Flask</small>
+            {% endif %}
+
+        {% else %}
+
+            <input type="{{ field_types.get(field, 'text') }}"
+                   id="{{ field }}"
+                   name="{{ field }}"
+                   value="{{ record.get(field) if record.get(field) is not none else '' }}"
+                   {% if field in required %}required{% endif %}>
+
+        {% endif %}
+
+    {% endfor %}
+
+    <button type="submit">Save</button>
+
+    <a class="button"
+       href="{{ url_for('list_records', table=table) }}">
+        Cancel
+    </a>
+
+</form>
+
+{% endblock %}

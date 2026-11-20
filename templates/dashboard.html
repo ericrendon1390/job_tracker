@@ -1,0 +1,55 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Job Application Dashboard</h1>
+<p>Welcome to your Job Application Tracker!</p>
+
+<div class="cards">
+    <div class="card">
+        <h2>{{ stats.companies }}</h2>
+        <p>Companies</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ stats.jobs }}</h2>
+        <p>Jobs</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ stats.applications }}</h2>
+        <p>Applications</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ stats.contacts }}</h2>
+        <p>Contacts</p>
+    </div>
+</div>
+
+<h2>Quick Actions</h2>
+
+<p>
+    <a class="button"
+       href="{{ url_for('add_record', table='companies') }}">
+       Add Company
+    </a>
+
+    <a class="button"
+       href="{{ url_for('add_record', table='jobs') }}">
+       Add Job
+    </a>
+
+    <a class="button"
+       href="{{ url_for('add_record', table='applications') }}">
+       Add Application
+    </a>
+
+    <a class="button"
+       href="{{ url_for('job_match') }}">
+       Match Jobs
+    </a>
+</p>
+
+{% endblock %}

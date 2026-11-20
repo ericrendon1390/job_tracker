@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Job Match</h1>
+
+<p>Enter your skills to find matching jobs.</p>
+
+<form method="POST">
+    <label for="skills">Your Skills</label>
+
+    <input type="text"
+           id="skills"
+           name="skills"
+           placeholder="Python, SQL, Flask"
+           value="{{ skills_input }}"
+           required>
+
+    <button type="submit">Find Matching Jobs</button>
+</form>
+
+{% if results %}
+
+<h2>Matching Jobs</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Match Percentage</th>
+            <th>Skills Matched</th>
+            <th>Missing Skills</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for job in results %}
+        <tr>
+            <td>{{ job.title }}</td>
+            <td>{{ job.company }}</td>
+            <td><strong>{{ job.percentage }}%</strong></td>
+            <td>{{ job.matched }}/{{ job.total }}</td>
+            <td>
+                {% if job.missing %}
+                    {{ job.missing | join(", ") }}
+                {% else %}
+                    None
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% elif request.method == "POST" %}
+
+<p>No jobs found. Add jobs first to see matches.</p>
+
+{% endif %}
+
+{% endblock %}
